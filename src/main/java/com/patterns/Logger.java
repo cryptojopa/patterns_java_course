@@ -2,6 +2,7 @@ package com.patterns;
 
 import lombok.Getter;
 
+/* Реализует паттерн Singleton*/
 public class Logger {
     @Getter
     private static final Logger INSTANCE = new Logger();
