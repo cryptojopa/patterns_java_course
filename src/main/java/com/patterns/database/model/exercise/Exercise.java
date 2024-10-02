@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Exercise {
     @Id
     @SequenceGenerator(name = "exercise_id_seq", sequenceName = "exercise_id_seq", allocationSize = 1)
@@ -26,6 +27,7 @@ public abstract class Exercise {
 
     @NotNull
     @Column(name = "sets")
+    @OneToMany(mappedBy = "exercise")
     private List<Set> sets = new ArrayList<>();
 
     @NotBlank

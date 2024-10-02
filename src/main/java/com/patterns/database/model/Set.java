@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-
+/* Реализует паттерн Builder*/
 @Entity
 @Getter
 @Setter
-@Table(name = "set")
+@Table(name = "exercise_set")
 @NoArgsConstructor
 public class Set {
     @Id
@@ -17,6 +17,11 @@ public class Set {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "set_id_seq")
     @Setter(AccessLevel.NONE)
     private Long id;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "exercise_set_id")
+    private Long exercise;
 
     @Column(name = "weight")
     private double weight;
@@ -47,7 +52,7 @@ public class Set {
 
     @Override
     public String toString() {
-        return "Set" + id +
+        return "Set" +
                 "{weight=" + weight +
                 ", reps=" + reps +
                 ", intensity=" + intensity +

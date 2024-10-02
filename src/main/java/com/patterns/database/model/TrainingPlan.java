@@ -2,11 +2,20 @@ package com.patterns.database.model;
 
 
 import com.patterns.database.model.exercise.Exercise;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 /*Паттерн Prototype
 * Паттерн SFM*/
+
+@Entity
+@Getter
+@Setter
+@Table(name = "training_plan")
 public class TrainingPlan {
     private List<Exercise> exerciseList;
 
