@@ -1,6 +1,6 @@
 package com.patterns.database.model;
 
-public enum Muscle {
+public enum MuscleType {
     CHEST,
     LEGS,
     BICEPS,

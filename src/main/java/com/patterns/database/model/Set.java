@@ -1,5 +1,6 @@
 package com.patterns.database.model;
 
+import com.patterns.database.model.exercise.Exercise;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class Set {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "exercise_set_id")
-    private Long exercise;
+    private Exercise exercise;
 
     @Column(name = "weight")
     private double weight;
@@ -39,15 +40,17 @@ public class Set {
     private String commentary;
 
     @Builder
-    private Set(double weight, int reps, Intensity intensity, String commentary) {
+    private Set(Exercise exercise, double weight, int reps, Intensity intensity, String commentary) {
+        this.exercise = exercise; //надо что-то с ошибкой сделать;
         this.weight = weight;
         this.reps = reps;
         this.intensity = intensity;
-        this.commentary = commentary != null ? commentary : "";;
+        this.commentary = commentary != null ? commentary : "";
+
     }
 
     public Set replicate() {
-        return new Set(this.weight, this.reps, this.intensity, this.commentary);
+        return new Set(this.exercise, this.weight, this.reps, this.intensity, this.commentary);
     }
 
     @Override

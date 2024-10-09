@@ -3,8 +3,8 @@ package com.patterns;
 import com.patterns.database.model.Intensity;
 import com.patterns.database.model.Set;
 import com.patterns.database.model.exercise.Exercise;
-import com.patterns.database.model.exercise.ExerciseFactory;
-import com.patterns.database.model.exercise.ExerciseType;
+import com.patterns.database.model.exercise.ru.ExerciseFactory;
+import com.patterns.database.model.exercise.ru.ExerciseType;
 import com.patterns.exception.UnknownTypeException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,7 +29,7 @@ public class Application {
 
 			System.out.println(exercise.getSets());
 			System.out.println(exercise.getTitle());
-			System.out.println(exercise.getTargetMuscle());
+			System.out.println(exercise.getTargetMuscleType());
 		} catch (UnknownTypeException ignored) {
 
 		}

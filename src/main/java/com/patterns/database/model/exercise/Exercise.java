@@ -1,8 +1,9 @@
 package com.patterns.database.model.exercise;
 
 
-import com.patterns.database.model.Muscle;
+import com.patterns.database.model.MuscleType;
 import com.patterns.database.model.Set;
+import com.patterns.database.model.TrainingPlan;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +20,12 @@ public abstract class Exercise {
     @Id
     @SequenceGenerator(name = "exercise_id_seq", sequenceName = "exercise_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "exercise_id_seq")
+    @Setter(AccessLevel.NONE)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "bank_account_transaction_id", nullable = false)
+    private TrainingPlan trainingPlan;
 
     @NotBlank
     @Column(name = "title")
@@ -32,11 +38,11 @@ public abstract class Exercise {
 
     @NotBlank
     @Column(name = "target_muscle")
-    private Muscle targetMuscle;
+    private MuscleType targetMuscleType;
 
-    Exercise(String title, Muscle muscle) {
+    public Exercise(String title, MuscleType muscleType) {
         this.title = title;
-        this.targetMuscle = muscle;
+        this.targetMuscleType = muscleType;
     }
 
     public void addSet(Set set) {
@@ -49,7 +55,7 @@ public abstract class Exercise {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", sets=" + sets +
-                ", targetMuscle=" + targetMuscle +
+                ", targetMuscle=" + targetMuscleType +
                 '}';
     }
 }

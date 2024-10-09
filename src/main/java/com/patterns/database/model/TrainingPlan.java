@@ -2,8 +2,8 @@ package com.patterns.database.model;
 
 
 import com.patterns.database.model.exercise.Exercise;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +17,13 @@ import java.util.List;
 @Setter
 @Table(name = "training_plan")
 public class TrainingPlan {
+    @Id
+    @Setter(AccessLevel.NONE)
+    @SequenceGenerator(name = "training_plan_id_seq", sequenceName = "training_plan_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "training_plan_id_seq")
+    private Long id;
+
+    @OneToMany(mappedBy = "training_plan")
     private List<Exercise> exerciseList;
 
     private Goal goal;
@@ -27,29 +34,7 @@ public class TrainingPlan {
     private TrainingPlan(List<Exercise> exerciseList, Goal goal) {
     }
 
-    public TrainingPlan replicate(){
+    public TrainingPlan replicate() {
         return new TrainingPlan(this.exerciseList, this.goal);
     }
-
-//    public static TrainingPlan getDefaultTrainingPlan() {
-//        List<Exercise> exercises = new ArrayList<>();
-//        exercises.add(Exercise.DUMBBELL_PRESS);
-//        exercises.add(Exercise.BARBELL_SQUAT);
-//        exercises.add(Exercise.BARBELL_CURLS);
-//        return new TrainingPlan(exercises, Goal.HYPERTROPHY);
-//    }
-//
-//    public static TrainingPlan getChestTrainingPlan() {
-//        List<Exercise> exercises = new ArrayList<>();
-//        exercises.add(Exercise.DUMBBELL_PRESS);
-//        exercises.add(Exercise.BENCH_PRESS);
-//        return new TrainingPlan(exercises, Goal.HYPERTROPHY);
-//    }
-//
-//    public static TrainingPlan getArmsTrainingPlan() {
-//        List<Exercise> exercises = new ArrayList<>();
-//        exercises.add(Exercise.BARBELL_CURLS);
-//        exercises.add(Exercise.FRENCH_PRESS);
-//        return new TrainingPlan(exercises, Goal.HYPERTROPHY);
-//    }
 }
