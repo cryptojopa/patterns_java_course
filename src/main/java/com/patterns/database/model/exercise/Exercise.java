@@ -24,7 +24,7 @@ public abstract class Exercise {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "bank_account_transaction_id", nullable = false)
+    @JoinColumn(name = "training_plan_id", nullable = false)
     private TrainingPlan trainingPlan;
 
     @NotBlank

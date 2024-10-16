@@ -1,4 +1,4 @@
-package com.patterns.database.model.exercise.eng;
+package com.patterns.database.model.exercise;
 
 public enum ExerciseType {
     BENCH_PRESS,

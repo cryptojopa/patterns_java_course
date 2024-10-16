@@ -46,7 +46,6 @@ public class Set {
         this.reps = reps;
         this.intensity = intensity;
         this.commentary = commentary != null ? commentary : "";
-
     }
 
     public Set replicate() {

@@ -1,4 +1,4 @@
-package com.patterns.database.model.exercise.ru;
+package com.patterns.database.model.exercise;
 
 import com.patterns.database.model.exercise.Exercise;
 import com.patterns.database.model.MuscleType;
@@ -9,9 +9,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class BarbellSquatsRu extends Exercise {
-
-    public BarbellSquatsRu() {
-        super("Приседания со штангой", MuscleType.LEGS);
+public class BenchPressRu extends Exercise {
+    public BenchPressRu() {
+        super("Жим штанги лежа", MuscleType.CHEST);
     }
 }
