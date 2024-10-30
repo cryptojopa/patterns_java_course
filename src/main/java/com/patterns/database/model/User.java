@@ -1,8 +1,8 @@
-package com.patterns.database.model;
-
-
-public class User {
-    public User() {
-
-    }
-}
+//package com.patterns.database.model;
+//
+//
+//public class User {
+//    public User() {
+//
+//    }
+//}

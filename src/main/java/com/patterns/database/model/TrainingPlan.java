@@ -1,21 +1,19 @@
 package com.patterns.database.model;
 
 
-import com.patterns.database.model.exercise.Exercise;
+import com.patterns.database.model.type.GoalType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.List;
-
-/*Паттерн Prototype
-* Паттерн SFM*/
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "training_plan")
+@AllArgsConstructor
+@NoArgsConstructor
 public class TrainingPlan {
     @Id
     @Setter(AccessLevel.NONE)
@@ -23,18 +21,10 @@ public class TrainingPlan {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "training_plan_id_seq")
     private Long id;
 
-    @OneToMany(mappedBy = "training_plan")
-    private List<Exercise> exerciseList;
+    @OneToMany(mappedBy = "plan")
+    private Set<Exercise> exerciseList = new HashSet<>();
 
-    private Goal goal;
-
-    public TrainingPlan() {
-    }
-
-    private TrainingPlan(List<Exercise> exerciseList, Goal goal) {
-    }
-
-    public TrainingPlan replicate() {
-        return new TrainingPlan(this.exerciseList, this.goal);
-    }
+    @ManyToOne
+    @JoinColumn(name = "goal_type_id")
+    private GoalType goalType;
 }
