@@ -10,4 +10,6 @@ public interface ExerciseTypeService {
     List<ExerciseType> findAll();
 
     void delete(Long id);
+
+    ExerciseType findByName(String name);
 }

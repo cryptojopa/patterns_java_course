@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Setter
@@ -32,29 +34,32 @@ public class TrainingSet {
 
     @ManyToOne
     @JoinColumn(name = "intensity_type_id", nullable = false)
-    private IntensityType intensityType;
+    private IntensityType intensity;
 
     @Size(max = 50)
     @NotNull
     private String commentary;
 
     @Builder
-    private TrainingSet(Exercise exercise, double weight, int reps, IntensityType intensityType, String commentary) {
+    private TrainingSet(Exercise exercise, double weight, int reps, IntensityType intensity, String commentary) {
         this.exercise = exercise; //надо что-то с ошибкой сделать;
         this.weight = weight;
         this.reps = reps;
-        this.intensityType = intensityType;
+        this.intensity = intensity;
         this.commentary = commentary != null ? commentary : "";
     }
 
     @Override
-    public String toString() {
-        return "Set" +
-                "{weight=" + weight +
-                ", reps=" + reps +
-                ", intensity=" + intensityType +
-                ", commentary='" + commentary + '\'' +
-                '}';
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        TrainingSet that = (TrainingSet) object;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 

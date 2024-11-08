@@ -5,4 +5,5 @@ public record TrainingSetDTO(
         String exercise,
         double weight,
         int reps,
-        String intensity){}
+        String intensity,
+        String commentary){}

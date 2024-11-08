@@ -1,5 +1,6 @@
 package com.patterns.service.impl;
 
+import com.patterns.controller.error.InvalidDataException;
 import com.patterns.database.model.type.GoalType;
 import com.patterns.database.repository.type.GoalTypeRepository;
 import com.patterns.service.GoalTypeService;
@@ -21,6 +22,11 @@ public class GoalTypeServiceImpl implements GoalTypeService {
     @Override
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public GoalType findByName(String name) throws InvalidDataException {
+        return repository.findByName(name).orElseThrow(InvalidDataException::new);
     }
 
     @Override

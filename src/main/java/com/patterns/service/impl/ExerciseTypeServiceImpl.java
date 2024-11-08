@@ -24,6 +24,11 @@ public class ExerciseTypeServiceImpl implements ExerciseTypeService {
     }
 
     @Override
+    public ExerciseType findByName(String name) {
+        return repository.findByName(name).get();
+    }
+
+    @Override
     public void add(String name) {
         if (repository.findByName(name).isEmpty()) {
             ExerciseType exerciseType = new ExerciseType();
