@@ -1,5 +1,6 @@
 package com.patterns.service.impl;
 
+import com.patterns.database.model.TrainingSet;
 import com.patterns.database.repository.TrainingSetRepository;
 import com.patterns.dto.TrainingSetDTO;
 import com.patterns.dto.mapper.TrainingSetMapper;
@@ -23,5 +24,10 @@ public class TrainingSetServiceImpl implements TrainingSetService {
     @Override
     public void addTrainingSet(String exercise, double weight, int reps, String intensity, String commentary) {
 
+    }
+
+    @Override
+    public List<TrainingSet> findAll() {
+        return trainingSetRepository.findAll();
     }
 }
