@@ -81,4 +81,9 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public TrainingPlan findByTitle(String title) {
+        return repository.findByTitle(title);
+    }
 }
