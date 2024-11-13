@@ -2,8 +2,10 @@ package com.patterns.controller;
 
 import com.patterns.controller.error.InvalidDataException;
 import com.patterns.controller.error.NotFoundException;
+import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingPlanDTO;
 import com.patterns.service.TrainingPlanService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,8 @@ import java.util.List;
 public class TrainingPlanController {
     private final TrainingPlanService service;
     @PostMapping("/add")
-    public ResponseEntity<String> add(@RequestParam("title") String title,
-                                      @RequestParam("goal_type") String goalType) {
+    public ResponseEntity<String> add(@RequestParam("title") @NotBlank String title,
+                                      @RequestParam("goal_type") @NotBlank String goalType) {
         try {
             service.create(title, goalType);
             return new ResponseEntity<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED);
@@ -27,8 +29,8 @@ public class TrainingPlanController {
         }
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<HttpStatus> delete(@RequestParam("id") Long id) {
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Long id) {
         service.delete(id);
         return new ResponseEntity<>(HttpStatus.OK, HttpStatus.OK);
     }
@@ -38,9 +40,9 @@ public class TrainingPlanController {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
-    @PutMapping("/update-title")
-    public ResponseEntity<String> updateTitle(@RequestParam("id") Long id,
-                                              @RequestParam("title") String title) {
+    @PutMapping("/{id}/update/title")
+    public ResponseEntity<String> updateTitle(@PathVariable("id")  Long id,
+                                              @RequestParam("title") @NotBlank String title) {
         try {
             service.updateTitle(id, title);
             return new ResponseEntity<>(HttpStatus.OK.getReasonPhrase(), HttpStatus.OK);
@@ -49,8 +51,8 @@ public class TrainingPlanController {
         }
     }
 
-    @PutMapping("/update-goal")
-    public ResponseEntity<String> updateGoalType(@RequestParam("id") Long id,
+    @PutMapping("/{id}/update/goal")
+    public ResponseEntity<String> updateGoalType(@PathVariable("id") Long id,
                                               @RequestParam("goal_type") String goalType) {
         try {
             service.updateGoalType(id, goalType);
@@ -62,6 +64,21 @@ public class TrainingPlanController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(service.findById(id)) ;
+        } catch (NotFoundException e) {
+            return ResponseEntity.badRequest().body("Invalid id");
+        }
+    }
 
-
+    @GetMapping("/{id}/exercises")
+    public List<ExerciseDTO> findExercisesByPlanId(@PathVariable("id") Long id) {
+        try {
+            return service.findExercisesByPlanId(id);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

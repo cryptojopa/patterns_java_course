@@ -18,10 +18,10 @@ public class IntensityTypeController {
         return service.findAll();
     }
 
-//    @PostMapping("/add")
-//    public void add(@RequestParam("intensity_type") String intensityType) {
-//        service.add(intensityType);
-//    }
+    @PostMapping("/add")
+    public void add(@RequestParam("intensity_type") String intensityType) {
+        service.add(intensityType);
+    }
 
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id) {

@@ -6,9 +6,7 @@ import java.util.List;
 
 public record ExerciseDTO(
         Long id,
-        String plan,
-        List<TrainingSet> trainingSets,
         String targetMuscle,
-        String exerciseType
-) {
+        String exerciseType,
+        List<TrainingSet> trainingSets) {
 }

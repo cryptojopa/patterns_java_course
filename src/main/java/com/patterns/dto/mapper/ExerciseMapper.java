@@ -7,9 +7,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ExerciseMapper {
-
-    @Mapping(source = "exercise.plan.title", target = "plan")
-    @Mapping(source = "exercise.targetMuscle.name", target = "targetMuscle")
+//    @Mapping(source = "exercise.plan.title", target = "plan")
     @Mapping(source = "exercise.exerciseType.name", target = "exerciseType")
+    @Mapping(source = "exercise.exerciseType.targetMuscle.name", target = "targetMuscle")
     ExerciseDTO convertToDTO(Exercise exercise);
 }

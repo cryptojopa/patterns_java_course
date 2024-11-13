@@ -23,6 +23,10 @@ public class ExerciseType{
     @Column(nullable = false)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "target_muscle_id", nullable = false)
+    private MuscleType targetMuscle;
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

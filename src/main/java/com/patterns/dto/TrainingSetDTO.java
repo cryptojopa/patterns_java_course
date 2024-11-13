@@ -6,4 +6,6 @@ public record TrainingSetDTO(
         double weight,
         int reps,
         String intensity,
-        String commentary){}
+        String commentary) {
+
+}

@@ -2,7 +2,6 @@ package com.patterns.database.model;
 
 
 import com.patterns.database.model.type.ExerciseType;
-import com.patterns.database.model.type.MuscleType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,10 +28,6 @@ public class Exercise {
 
     @OneToMany(mappedBy = "exercise")
     private Set<TrainingSet> trainingSets = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "target_muscle_id", nullable = false)
-    private MuscleType targetMuscle;
 
     @ManyToOne
     @JoinColumn(name = "exercise_type_id", nullable = false)

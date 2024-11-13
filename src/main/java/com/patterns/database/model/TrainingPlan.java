@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -29,11 +27,13 @@ public class TrainingPlan {
 
     @Setter(AccessLevel.NONE)
     @OneToMany(mappedBy = "plan")
-    private Set<Exercise> exerciseList = new HashSet<>();
+    private Set<Exercise> exercises;
 
     @ManyToOne
     @JoinColumn(name = "goal_type_id")
     private GoalType goalType;
+
+
 
     @Override
     public boolean equals(Object object) {
