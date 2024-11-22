@@ -10,15 +10,6 @@ import java.util.Objects;
 @Getter
 @Setter
 public class TypeGoal extends Type {
-//    @Id
-//    @SequenceGenerator(name = "goal_type_id_seq", sequenceName = "goal_type_id_seq", allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "goal_type_id_seq")
-//    private Long id;
-
-//    @Column(nullable = false, unique = true)
-//    @NotBlank
-//    private String name;
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

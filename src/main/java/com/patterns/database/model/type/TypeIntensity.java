@@ -11,15 +11,6 @@ import java.util.Objects;
 @Getter
 @Setter
 public class TypeIntensity extends Type{
-//    @Id
-//    @SequenceGenerator(name = "intensity_type_id_seq", sequenceName = "intensity_type_id_seq", allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "intensity_type_id_seq")
-//    private Long id;
-
-//    @NotBlank
-//    @Column(nullable = false)
-//    private String name;
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
