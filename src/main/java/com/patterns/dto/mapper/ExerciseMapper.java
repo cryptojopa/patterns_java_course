@@ -5,7 +5,7 @@ import com.patterns.dto.ExerciseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = TrainingSetMapper.class)
 public interface ExerciseMapper {
 //    @Mapping(source = "exercise.plan.title", target = "plan")
     @Mapping(source = "exercise.exerciseType.name", target = "exerciseType")

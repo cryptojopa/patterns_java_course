@@ -1,7 +1,7 @@
 package com.patterns.database.model;
 
 
-import com.patterns.database.model.type.GoalType;
+import com.patterns.database.model.type.TypeGoal;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -31,9 +31,7 @@ public class TrainingPlan {
 
     @ManyToOne
     @JoinColumn(name = "goal_type_id")
-    private GoalType goalType;
-
-
+    private TypeGoal typeGoal;
 
     @Override
     public boolean equals(Object object) {

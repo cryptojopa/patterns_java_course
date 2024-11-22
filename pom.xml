@@ -31,6 +31,11 @@
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<org.projectlombok.version>1.18.30</org.projectlombok.version>
 		<jakarta.version>3.1.0</jakarta.version>
+		<jakarta.ws.rs.version>4.0.0</jakarta.ws.rs.version>
+		<org.hibernate.validator.version>8.0.1.Final</org.hibernate.validator.version>
+		<jakarta.validation.version>3.0.2</jakarta.validation.version>
+		<org.apache.maven.plugins.version>3.8.1</org.apache.maven.plugins.version>
+		<org.projectlombok.version>0.2.0</org.projectlombok.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,7 +45,7 @@
 		<dependency>
 			<groupId>jakarta.ws.rs</groupId>
 			<artifactId>jakarta.ws.rs-api</artifactId>
-			<version>4.0.0</version>
+			<version>${jakarta.ws.rs.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -64,7 +69,7 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>8.0.1.Final</version>
+            <version>${org.hibernate.validator.version}</version>
         </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -78,12 +83,7 @@
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
-			<version>3.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mapstruct</groupId>
-			<artifactId>mapstruct</artifactId>
-			<version>1.5.5.Final</version>
+			<version>${jakarta.validation.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -113,7 +113,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${org.apache.maven.plugins.version}</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -131,7 +131,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>0.2.0</version>
+							<version>${org.projectlombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>

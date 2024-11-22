@@ -1,10 +1,10 @@
 package com.patterns.dto;
 
 public record TrainingSetDTO(
-        long id,
+        Long id,
         String exercise,
-        double weight,
-        int reps,
+        Double weight,
+        Integer reps,
         String intensity,
         String commentary) {
 

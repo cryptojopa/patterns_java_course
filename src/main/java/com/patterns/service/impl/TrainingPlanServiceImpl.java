@@ -1,13 +1,15 @@
 package com.patterns.service.impl;
 
-import com.patterns.controller.error.InvalidDataException;
 import com.patterns.controller.error.NotFoundException;
 import com.patterns.database.model.TrainingPlan;
+import com.patterns.database.model.type.TypeExercise;
 import com.patterns.database.repository.TrainingPlanRepository;
 import com.patterns.dto.ExerciseDTO;
+import com.patterns.dto.TrainingPlanCutDTO;
 import com.patterns.dto.TrainingPlanDTO;
-import com.patterns.dto.mapper.ExerciseMapper;
 import com.patterns.dto.mapper.TrainingPlanMapper;
+import com.patterns.service.ExerciseService;
+import com.patterns.service.ExerciseTypeService;
 import com.patterns.service.GoalTypeService;
 import com.patterns.service.TrainingPlanService;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +24,14 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     private final TrainingPlanRepository repository;
     private final TrainingPlanMapper mapper;
     private final GoalTypeService goalTypeService;
-    private final ExerciseMapper exerciseMapper;
+    private final ExerciseService exerciseService;
+    private final ExerciseTypeService exerciseTypeService;
 
     @Override
-    public void create(String title, String goalType) throws InvalidDataException {
+    public void create(String title, String goalType) throws NotFoundException {
         TrainingPlan plan = new TrainingPlan();
         plan.setTitle(title);
-        plan.setGoalType(goalTypeService.findByName(goalType));
+        plan.setTypeGoal(goalTypeService.findByName(goalType));
         repository.save(plan);
     }
 
@@ -38,8 +41,8 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     }
 
     @Override
-    public List<TrainingPlanDTO> findAll() {
-        return repository.findAll().stream().map(mapper::convertToDTO).toList();
+    public List<TrainingPlanCutDTO> findAll() {
+        return repository.findAll().stream().map(mapper::convertToCutDTO).toList();
     }
 
     @Override
@@ -55,11 +58,11 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     }
 
     @Override
-    public void updateGoalType(Long id, String goalType) throws NotFoundException, InvalidDataException {
+    public void updateGoalType(Long id, String goalType) throws NotFoundException {
         Optional<TrainingPlan> optPlan = repository.findById(id);
         if (optPlan.isPresent()) {
             TrainingPlan plan = optPlan.get();
-            plan.setGoalType(goalTypeService.findByName(goalType));
+            plan.setTypeGoal(goalTypeService.findByName(goalType));
             repository.save(plan);
         } else {
             throw new NotFoundException();
@@ -73,12 +76,15 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
 
     @Override
     public List<ExerciseDTO> findExercisesByPlanId(Long id){
-        Optional<TrainingPlan> plan = repository.findById(id);
+        return exerciseService.findByTrainingPlanId(id);
+    }
+
+    @Override
+    public void addExercise(Long planId, String exerciseType) throws NotFoundException {
+        Optional<TrainingPlan> plan = repository.findById(planId);
         if (plan.isPresent()) {
-            TrainingPlan truePlan = plan.get();
-            return truePlan.getExercises().stream().map(exerciseMapper::convertToDTO).toList();
-        } else {
-            throw new RuntimeException();
+            TypeExercise typeExercise1 = exerciseTypeService.findByName(exerciseType);
+            exerciseService.create(plan.get(), typeExercise1);
         }
     }
 }

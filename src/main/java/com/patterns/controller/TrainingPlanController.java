@@ -1,11 +1,12 @@
 package com.patterns.controller;
 
-import com.patterns.controller.error.InvalidDataException;
 import com.patterns.controller.error.NotFoundException;
 import com.patterns.dto.ExerciseDTO;
+import com.patterns.dto.TrainingPlanCutDTO;
 import com.patterns.dto.TrainingPlanDTO;
 import com.patterns.service.TrainingPlanService;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,34 +15,44 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/training-plan")
+@RequestMapping("api/training-plans")
 @RequiredArgsConstructor
 public class TrainingPlanController {
     private final TrainingPlanService service;
-    @PostMapping("/add")
+
+    @PostMapping()
     public ResponseEntity<String> add(@RequestParam("title") @NotBlank String title,
-                                      @RequestParam("goal_type") @NotBlank String goalType) {
+                                      @RequestParam("goal") @NotBlank String goalType) {
         try {
             service.create(title, goalType);
             return new ResponseEntity<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED);
-        } catch (InvalidDataException e) {
+        } catch (NotFoundException e) {
             return new ResponseEntity<>("Invalid goal type", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("/{id}/delete")
-    public ResponseEntity<HttpStatus> delete(@PathVariable("id") Long id) {
-        service.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK, HttpStatus.OK);
+    @GetMapping("/{planId}")
+    public ResponseEntity<?> findById(@PathVariable("planId") Long id) {
+        try {
+            return ResponseEntity.ok(service.findById(id)) ;
+        } catch (NotFoundException e) {
+            return ResponseEntity.badRequest().body("Invalid id");
+        }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<TrainingPlanDTO>> findAll() {
+    @GetMapping()
+    public ResponseEntity<List<TrainingPlanCutDTO>> findAll() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/update/title")
-    public ResponseEntity<String> updateTitle(@PathVariable("id")  Long id,
+    @DeleteMapping("/{planId}")
+    public ResponseEntity<String> delete(@PathVariable("planId") Long id) {
+        service.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK.getReasonPhrase());
+    }
+
+    @PatchMapping("/{planId}/title")
+    public ResponseEntity<String> updateTitle(@PathVariable("planId")  Long id,
                                               @RequestParam("title") @NotBlank String title) {
         try {
             service.updateTitle(id, title);
@@ -51,34 +62,35 @@ public class TrainingPlanController {
         }
     }
 
-    @PutMapping("/{id}/update/goal")
-    public ResponseEntity<String> updateGoalType(@PathVariable("id") Long id,
-                                              @RequestParam("goal_type") String goalType) {
+    @PatchMapping("/{planId}/goal")
+    public ResponseEntity<?> updateGoalType(@PathVariable("planId") @NotNull Long id,
+                                              @RequestParam("goal") String goalType) {
         try {
             service.updateGoalType(id, goalType);
             return new ResponseEntity<>(HttpStatus.OK.getReasonPhrase(), HttpStatus.OK);
         } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid id: " + id);
-        } catch (InvalidDataException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid goal: " + goalType);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid plan id: " + id);
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+    @PostMapping("/{planId}/exercises")
+    public void addExercise(@PathVariable("planId") @NotNull Long id,
+                            @RequestParam("exerciseType") String exerciseType) {
         try {
-            return ResponseEntity.ok(service.findById(id)) ;
+            service.addExercise(id, exerciseType);
         } catch (NotFoundException e) {
-            return ResponseEntity.badRequest().body("Invalid id");
+            throw new RuntimeException(e);
         }
     }
 
-    @GetMapping("/{id}/exercises")
-    public List<ExerciseDTO> findExercisesByPlanId(@PathVariable("id") Long id) {
+
+    @GetMapping("/{planId}/exercises")
+    public List<ExerciseDTO> findExercisesByPlanId(@PathVariable("planId") @NotNull Long id) {
         try {
             return service.findExercisesByPlanId(id);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
+
 }

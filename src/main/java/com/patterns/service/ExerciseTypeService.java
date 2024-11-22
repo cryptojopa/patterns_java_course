@@ -1,15 +1,16 @@
 package com.patterns.service;
 
-import com.patterns.database.model.type.ExerciseType;
+import com.patterns.controller.error.NotFoundException;
+import com.patterns.database.model.type.TypeExercise;
 
 import java.util.List;
 
 public interface ExerciseTypeService {
-    void add(String name);
+    void add(String name, String muscle) throws NotFoundException;
 
-    List<ExerciseType> findAll();
+    List<TypeExercise> findAll();
 
     void delete(Long id);
 
-    ExerciseType findByName(String name);
+    TypeExercise findByName(String name) throws NotFoundException;
 }

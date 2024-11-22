@@ -8,5 +8,5 @@ public record ExerciseDTO(
         Long id,
         String targetMuscle,
         String exerciseType,
-        List<TrainingSet> trainingSets) {
+        List<TrainingSetDTO> trainingSets) {
 }

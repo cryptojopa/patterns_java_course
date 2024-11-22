@@ -1,7 +1,7 @@
 package com.patterns.database.model;
 
 
-import com.patterns.database.model.type.ExerciseType;
+import com.patterns.database.model.type.TypeExercise;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,7 +31,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "exercise_type_id", nullable = false)
-    private ExerciseType exerciseType;
+    private TypeExercise typeExercise;
 
     public void addSet(TrainingSet trainingSet) {
         trainingSets.add(trainingSet);

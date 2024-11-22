@@ -1,6 +1,7 @@
 package com.patterns.controller;
 
-import com.patterns.database.model.type.ExerciseType;
+import com.patterns.controller.error.NotFoundException;
+import com.patterns.database.model.type.TypeExercise;
 import com.patterns.service.ExerciseTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +14,23 @@ import java.util.List;
 public class ExerciseTypeController {
     private final ExerciseTypeService service;
 
-    @GetMapping("/get-all")
-    public List<ExerciseType> getAll() {
+    @GetMapping()
+    public List<TypeExercise> findAll() {
         return service.findAll();
     }
 
-    @PutMapping("/add")
-    public void add(@RequestParam("exercise_type") String exerciseType) {
-        service.add(exerciseType);
+    @PostMapping()
+    public void add(@RequestParam("exerciseType") String exerciseType,
+                    @RequestParam("targetMuscle") String muscle) {
+        try {
+            service.add(exerciseType, muscle);
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
         service.delete(id);
     }
 }

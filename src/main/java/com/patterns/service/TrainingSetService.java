@@ -1,12 +1,14 @@
 package com.patterns.service;
 
 
+import com.patterns.controller.error.NotFoundException;
+import com.patterns.database.model.Exercise;
 import com.patterns.dto.TrainingSetDTO;
 
 import java.util.List;
 
 public interface TrainingSetService {
-    List<TrainingSetDTO> getTrainingSetsByExerciseId(long exerciseId);
-
-    void addTrainingSet(String exercise, double weight, int reps, String intensity, String commentary);
+    List<TrainingSetDTO> findByExerciseId(long exerciseId);
+    void add(Exercise exercise, Double weight, Integer reps, String intensity, String commentary);
+    void update(Long id, Double weight, Integer reps, String intensity, String commentary) throws NotFoundException;
 }

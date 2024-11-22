@@ -1,13 +1,11 @@
 package com.patterns.service;
 
-import com.patterns.database.model.type.IntensityType;
+import com.patterns.controller.error.NotFoundException;
+import com.patterns.database.model.type.TypeIntensity;
 
 import java.util.List;
 
 public interface IntensityTypeService {
-    void add(String name);
-
-    List<IntensityType> findAll();
-
-    void delete(Long id);
+    List<TypeIntensity> findAll();
+    TypeIntensity findByName(String name) throws NotFoundException;
 }

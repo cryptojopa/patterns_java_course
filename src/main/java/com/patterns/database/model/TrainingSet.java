@@ -1,6 +1,6 @@
 package com.patterns.database.model;
 
-import com.patterns.database.model.type.IntensityType;
+import com.patterns.database.model.type.TypeIntensity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -25,24 +25,25 @@ public class TrainingSet {
     @JoinColumn(name = "training_set_id", nullable = false)
     private Exercise exercise;
 
+    @NotNull
     @Column(name = "weight")
-    private double weight;
+    private Double weight;
 
     @NotNull
     @Column(name = "reps")
-    private int reps;
+    private Integer reps;
 
     @ManyToOne
     @JoinColumn(name = "intensity_type_id", nullable = false)
-    private IntensityType intensity;
+    private TypeIntensity intensity;
 
     @Size(max = 50)
     @NotNull
     private String commentary;
 
     @Builder
-    private TrainingSet(Exercise exercise, double weight, int reps, IntensityType intensity, String commentary) {
-        this.exercise = exercise; //надо что-то с ошибкой сделать;
+    private TrainingSet(Exercise exercise, Double weight, Integer reps, TypeIntensity intensity, String commentary) {
+        this.exercise = exercise;
         this.weight = weight;
         this.reps = reps;
         this.intensity = intensity;

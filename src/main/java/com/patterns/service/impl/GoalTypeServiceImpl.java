@@ -1,7 +1,8 @@
 package com.patterns.service.impl;
 
-import com.patterns.controller.error.InvalidDataException;
-import com.patterns.database.model.type.GoalType;
+import com.patterns.controller.error.NotFoundException;
+import com.patterns.database.model.type.TypeGoal;
+//import com.patterns.database.repository.type.GoalTypeRepository;
 import com.patterns.database.repository.type.GoalTypeRepository;
 import com.patterns.service.GoalTypeService;
 import lombok.RequiredArgsConstructor;
@@ -15,26 +16,12 @@ public class GoalTypeServiceImpl implements GoalTypeService {
     private final GoalTypeRepository repository;
 
     @Override
-    public List<GoalType> findAll() {
+    public List<TypeGoal> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public GoalType findByName(String name) throws InvalidDataException {
-        return repository.findByName(name).orElseThrow(InvalidDataException::new);
-    }
-
-    @Override
-    public void add(String name) {
-        if (repository.findByName(name).isEmpty()) {
-            GoalType goalType = new GoalType();
-            goalType.setName(name.trim());
-            repository.save(goalType);
-        }
+    public TypeGoal findByName(String name) throws NotFoundException {
+        return repository.findByName(name).orElseThrow(NotFoundException::new);
     }
 }
