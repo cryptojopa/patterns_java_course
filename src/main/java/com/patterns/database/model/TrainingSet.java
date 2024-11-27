@@ -34,7 +34,7 @@ public class TrainingSet {
     private Integer reps;
 
     @ManyToOne
-    @JoinColumn(name = "intensity_type_id", nullable = false)
+    @JoinColumn(name = "type_intensity_id", nullable = false)
     private TypeIntensity intensity;
 
     @Size(max = 50)

@@ -30,8 +30,8 @@ public class TrainingPlan {
     private Set<Exercise> exercises;
 
     @ManyToOne
-    @JoinColumn(name = "goal_type_id")
-    private TypeGoal typeGoal;
+    @JoinColumn(name = "type_goal_id")
+    private TypeGoal goal;
 
     @Override
     public boolean equals(Object object) {

@@ -7,16 +7,17 @@ import lombok.*;
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Getter
 @Setter
 public abstract class Type {
     @Id
-    @GeneratedValue()
+    @GeneratedValue
     @Setter(AccessLevel.NONE)
-    Long id;
+    @EqualsAndHashCode.Include
+    private Long id;
 
     @NotBlank
     @Column(nullable = false, unique = true)
     private String name;
-
 }

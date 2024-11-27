@@ -3,6 +3,7 @@ package com.patterns.service.impl;
 import com.patterns.controller.error.NotFoundException;
 import com.patterns.database.model.TrainingPlan;
 import com.patterns.database.model.type.TypeExercise;
+import com.patterns.database.model.type.TypeGoal;
 import com.patterns.database.repository.TrainingPlanRepository;
 import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingPlanCutDTO;
@@ -31,7 +32,7 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     public void create(String title, String goalType) throws NotFoundException {
         TrainingPlan plan = new TrainingPlan();
         plan.setTitle(title);
-        plan.setTypeGoal(goalTypeService.findByName(goalType));
+        plan.setGoal(goalTypeService.findByName(goalType));
         repository.save(plan);
     }
 
@@ -62,7 +63,7 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
         Optional<TrainingPlan> optPlan = repository.findById(id);
         if (optPlan.isPresent()) {
             TrainingPlan plan = optPlan.get();
-            plan.setTypeGoal(goalTypeService.findByName(goalType));
+            plan.setGoal(goalTypeService.findByName(goalType));
             repository.save(plan);
         } else {
             throw new NotFoundException();

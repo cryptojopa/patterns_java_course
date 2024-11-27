@@ -30,7 +30,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     @Override
     public void create(TrainingPlan plan, TypeExercise typeExercise) {
         Exercise exercise = new Exercise();
-        exercise.setTypeExercise(typeExercise);
+        exercise.setExerciseType(typeExercise);
         exercise.setPlan(plan);
         repository.save(exercise);
     }

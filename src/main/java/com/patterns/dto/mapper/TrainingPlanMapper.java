@@ -8,10 +8,10 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = ExerciseMapper.class)
 public interface TrainingPlanMapper {
-    @Mapping(source = "trainingPlan.goalType.name", target = "goalType")
+    @Mapping(source = "trainingPlan.goal.name", target = "goal")
     @Mapping(source = "trainingPlan.exercises", target = "exercises")
     TrainingPlanDTO convertToDTO(TrainingPlan trainingPlan);
 
-    @Mapping(source = "trainingPlan.goalType.name", target = "goalType")
+    @Mapping(source = "trainingPlan.goal.name", target = "goal")
     TrainingPlanCutDTO convertToCutDTO(TrainingPlan trainingPlan);
 }

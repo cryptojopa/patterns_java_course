@@ -30,8 +30,8 @@ public class Exercise {
     private Set<TrainingSet> trainingSets = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "exercise_type_id", nullable = false)
-    private TypeExercise typeExercise;
+    @JoinColumn(name = "type_exercise_id", nullable = false)
+    private TypeExercise exerciseType;
 
     public void addSet(TrainingSet trainingSet) {
         trainingSets.add(trainingSet);
