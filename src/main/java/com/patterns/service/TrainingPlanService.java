@@ -1,6 +1,7 @@
 package com.patterns.service;
 
 import com.patterns.controller.error.NotFoundException;
+import com.patterns.database.model.TrainingPlan;
 import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingPlanCutDTO;
 import com.patterns.dto.TrainingPlanDTO;
@@ -13,7 +14,7 @@ public interface TrainingPlanService {
     List<TrainingPlanCutDTO> findAll();
     void updateTitle(Long id, String title) throws NotFoundException;
     void updateGoalType(Long id, String goalType) throws NotFoundException;
-    TrainingPlanDTO findById(Long id) throws NotFoundException;
+    TrainingPlan findById(Long id) throws NotFoundException;
     List<ExerciseDTO> findExercisesByPlanId(Long id);
     void addExercise(Long planId, String exerciseType) throws NotFoundException;
 }

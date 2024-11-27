@@ -71,8 +71,8 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     }
 
     @Override
-    public TrainingPlanDTO findById(Long id) throws NotFoundException {
-        return repository.findById(id).map(mapper::convertToDTO).orElseThrow(NotFoundException::new);
+    public TrainingPlan findById(Long id) throws NotFoundException {
+        return repository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override

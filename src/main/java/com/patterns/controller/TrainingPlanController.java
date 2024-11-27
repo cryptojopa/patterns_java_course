@@ -1,10 +1,12 @@
 package com.patterns.controller;
 
 import com.patterns.controller.error.NotFoundException;
+import com.patterns.database.model.TrainingPlan;
 import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingPlanCutDTO;
 import com.patterns.dto.TrainingPlanDTO;
 import com.patterns.service.TrainingPlanService;
+import com.patterns.task18.HistoryManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +14,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/training-plans")
 @RequiredArgsConstructor
 public class TrainingPlanController {
     private final TrainingPlanService service;
+    private final Map<Long, HistoryManager> historyManagers = new HashMap<>();
 
     @PostMapping()
     public ResponseEntity<String> add(@RequestParam("title") @NotBlank String title,
@@ -93,4 +98,34 @@ public class TrainingPlanController {
         }
     }
 
+    @PostMapping("/{id}/save")
+    public ResponseEntity<String> saveState(@PathVariable Long id) {
+        TrainingPlan workoutPlan = null;
+        try {
+            workoutPlan = service.findById(id);
+            historyManagers.putIfAbsent(id, new HistoryManager());
+            historyManagers.get(id).saveState(workoutPlan.saveToMemento());
+            return ResponseEntity.ok("Workout plan saved!");
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/{id}/undo")
+    public ResponseEntity<String> undo(@PathVariable Long id) {
+        TrainingPlan workoutPlan = null;
+        try {
+            workoutPlan = service.findById(id);
+            HistoryManager historyManager = historyManagers.get(id);
+
+            if (workoutPlan == null || historyManager == null || !historyManager.hasHistory()) {
+                return ResponseEntity.badRequest().body("No previous state to restore!");
+            }
+
+            workoutPlan.restoreFromMemento(historyManager.getPreviousState());
+            return ResponseEntity.ok("Workout plan restored to previous state!");
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

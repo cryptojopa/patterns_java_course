@@ -2,6 +2,7 @@ package com.patterns.database.model;
 
 
 import com.patterns.database.model.type.TypeGoal;
+import com.patterns.task18.TrainingPlanMemento;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -32,6 +33,16 @@ public class TrainingPlan {
     @ManyToOne
     @JoinColumn(name = "type_goal_id")
     private TypeGoal goal;
+
+    public void restoreFromMemento(TrainingPlanMemento memento) {
+        this.title = memento.getTitle();
+        this.exercises = new HashSet<>(memento.getExercises());
+        this.goal = memento.getGoal();
+    }
+
+    public TrainingPlanMemento saveToMemento() {
+        return new TrainingPlanMemento(title, new HashSet<>(exercises), goal);
+    }
 
     @Override
     public boolean equals(Object object) {
