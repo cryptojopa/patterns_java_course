@@ -41,15 +41,6 @@ public class TrainingSet {
     @NotNull
     private String commentary;
 
-    @Builder
-    private TrainingSet(Exercise exercise, Double weight, Integer reps, TypeIntensity intensity, String commentary) {
-        this.exercise = exercise;
-        this.weight = weight;
-        this.reps = reps;
-        this.intensity = intensity;
-        this.commentary = commentary != null ? commentary : "";
-    }
-
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;

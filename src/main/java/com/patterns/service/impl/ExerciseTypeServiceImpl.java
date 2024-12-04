@@ -1,8 +1,8 @@
 package com.patterns.service.impl;
 
-import com.patterns.controller.error.NotFoundException;
 import com.patterns.database.model.type.TypeExercise;
 //import com.patterns.database.repository.type.ExerciseTypeRepository;
+import com.patterns.database.model.type.TypeMuscle;
 import com.patterns.database.repository.type.ExerciseTypeRepository;
 import com.patterns.database.repository.type.MuscleTypeRepository;
 import com.patterns.service.ExerciseTypeService;
@@ -28,16 +28,17 @@ public class ExerciseTypeServiceImpl implements ExerciseTypeService {
     }
 
     @Override
-    public TypeExercise findByName(String name) throws NotFoundException {
-        return repository.findByName(name).orElseThrow(NotFoundException::new);
+    public TypeExercise findByName(String name){
+        return repository.findByName(name).orElseGet(TypeExercise::new);
+
     }
 
     @Override
-    public void add(String name, String muscle) throws NotFoundException {
+    public void add(String name, String muscle){
         if (repository.findByName(name).isEmpty()) {
             TypeExercise typeExercise = new TypeExercise();
             typeExercise.setName(name);
-            typeExercise.setTargetMuscle(muscleTypeRepository.findByName(muscle).orElseThrow(NotFoundException::new));
+            typeExercise.setTargetMuscle(muscleTypeRepository.findByName(muscle).orElseGet(TypeMuscle::new));
             repository.save(typeExercise);
         }
     }

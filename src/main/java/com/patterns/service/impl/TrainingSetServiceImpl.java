@@ -22,31 +22,25 @@ public class TrainingSetServiceImpl implements TrainingSetService {
     private final TrainingSetMapper mapper;
 
     @Override
-    public List<TrainingSetDTO> findByExerciseId(long exerciseId) {
+    public List<TrainingSetDTO> findByExerciseId(Long exerciseId) {
         return repository.findByExerciseId(exerciseId).stream().map(mapper::convertToDTO).toList();
     }
 
     @Override
     public void add(Exercise exercise, Double weight, Integer reps, String intensity, String commentary) {
-        try {
             TypeIntensity typeIntensity = intensityTypeService.findByName(intensity);
-            TrainingSet set = TrainingSet.builder()
-                    .exercise(exercise)
-                    .weight(weight)
-                    .reps(reps)
-                    .intensity(typeIntensity)
-                    .commentary(commentary)
-                    .build();
+            TrainingSet set = new TrainingSet()
+            set.setExercise(exercise);
+            set.setWeight(weight);
+            set.setReps(reps);
+            set.setIntensity()
+            set.setCommentary(commentary);
             repository.save(set);
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
-    public void update(Long id, Double weight, Integer reps, String intensity, String commentary) throws NotFoundException {
-        try {
-            TrainingSet set = repository.findById(id).orElseThrow(NotFoundException::new);
+    public void update(Long id, Double weight, Integer reps, String intensity, String commentary) {
+            TrainingSet set = repository.findById(id).;
             repository.update(id, weight, reps, commentary);
         } catch (NotFoundException e) {
             throw new RuntimeException("TrainingSet not found", e);

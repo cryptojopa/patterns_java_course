@@ -35,7 +35,7 @@
 		<org.hibernate.validator.version>8.0.1.Final</org.hibernate.validator.version>
 		<jakarta.validation.version>3.0.2</jakarta.validation.version>
 		<org.apache.maven.plugins.version>3.8.1</org.apache.maven.plugins.version>
-		<org.projectlombok.version>0.2.0</org.projectlombok.version>
+		<org.projectlombok.mapstruct.binding.version>0.2.0</org.projectlombok.mapstruct.binding.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -135,7 +135,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>${org.projectlombok.version}</version>
+							<version>${org.projectlombok.mapstruct.binding.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>

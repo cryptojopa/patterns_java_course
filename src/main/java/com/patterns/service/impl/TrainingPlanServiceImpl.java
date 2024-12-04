@@ -1,9 +1,7 @@
 package com.patterns.service.impl;
 
-import com.patterns.controller.error.NotFoundException;
 import com.patterns.database.model.TrainingPlan;
 import com.patterns.database.model.type.TypeExercise;
-import com.patterns.database.model.type.TypeGoal;
 import com.patterns.database.repository.TrainingPlanRepository;
 import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingPlanCutDTO;
@@ -29,7 +27,7 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     private final ExerciseTypeService exerciseTypeService;
 
     @Override
-    public void create(String title, String goalType) throws NotFoundException {
+    public void create(String title, String goalType) {
         TrainingPlan plan = new TrainingPlan();
         plan.setTitle(title);
         plan.setGoal(goalTypeService.findByName(goalType));
@@ -37,7 +35,7 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 
@@ -47,32 +45,8 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     }
 
     @Override
-    public void updateTitle(Long id, String title) throws NotFoundException {
-        Optional<TrainingPlan> optPlan = repository.findById(id);
-        if (optPlan.isPresent()) {
-            TrainingPlan plan = optPlan.get();
-            plan.setTitle(title);
-            repository.save(plan);
-        } else {
-            throw new NotFoundException();
-        }
-    }
-
-    @Override
-    public void updateGoalType(Long id, String goalType) throws NotFoundException {
-        Optional<TrainingPlan> optPlan = repository.findById(id);
-        if (optPlan.isPresent()) {
-            TrainingPlan plan = optPlan.get();
-            plan.setGoal(goalTypeService.findByName(goalType));
-            repository.save(plan);
-        } else {
-            throw new NotFoundException();
-        }
-    }
-
-    @Override
-    public TrainingPlanDTO findById(Long id) throws NotFoundException {
-        return repository.findById(id).map(mapper::convertToDTO).orElseThrow(NotFoundException::new);
+    public TrainingPlanDTO findById(Long id)   {
+        return repository.findById(id).map(mapper::convertToDTO).orElse(  );
     }
 
     @Override
@@ -81,11 +55,16 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     }
 
     @Override
-    public void addExercise(Long planId, String exerciseType) throws NotFoundException {
+    public void addExercise(Long planId, String exerciseType)   {
         Optional<TrainingPlan> plan = repository.findById(planId);
         if (plan.isPresent()) {
             TypeExercise typeExercise1 = exerciseTypeService.findByName(exerciseType);
             exerciseService.create(plan.get(), typeExercise1);
         }
+    }
+
+    @Override
+    public void update(Long id, TrainingPlanDTO planDTO) {
+        repository.findById(id)
     }
 }

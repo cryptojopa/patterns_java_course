@@ -32,13 +32,10 @@ public class ExerciseController {
             throw new RuntimeException();
         }
     }
-
+    //принимать дтошку
     @PostMapping("/{exerciseId}/sets")
     public void addSet(@PathVariable("exerciseId") Long id,
-                       @RequestParam("weight") Double weight,
-                       @RequestParam("reps") Integer reps,
-                       @RequestParam("intensity") String intensity,
-                       @RequestParam("commentary") String commentary) {
+                       @RequestBody TrainingSetDTO dto){
         try {
             service.addSet(id, weight, reps, intensity, commentary);
         } catch (NotFoundException e) {

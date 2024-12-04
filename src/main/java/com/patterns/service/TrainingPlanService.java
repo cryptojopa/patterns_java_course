@@ -8,12 +8,13 @@ import com.patterns.dto.TrainingPlanDTO;
 import java.util.List;
 
 public interface TrainingPlanService {
-    void create(String title, String goalType) throws NotFoundException;
-    void delete(long id);
+    void create(String title, String goalType);
+    void delete(Long id);
     List<TrainingPlanCutDTO> findAll();
-    void updateTitle(Long id, String title) throws NotFoundException;
-    void updateGoalType(Long id, String goalType) throws NotFoundException;
-    TrainingPlanDTO findById(Long id) throws NotFoundException;
+//    void updateTitle(Long id, String title);
+//    void updateGoalType(Long id, String goalType);
+    void update(Long id, TrainingPlanDTO planDTO);
+    TrainingPlanDTO findById(Long id);
     List<ExerciseDTO> findExercisesByPlanId(Long id);
-    void addExercise(Long planId, String exerciseType) throws NotFoundException;
+    void addExercise(Long planId, String exerciseType);
 }
