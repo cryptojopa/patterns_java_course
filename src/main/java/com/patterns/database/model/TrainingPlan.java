@@ -1,21 +1,22 @@
 package com.patterns.database.model;
 
 
-import com.patterns.database.model.exercise.Exercise;
+import com.patterns.database.model.type.TypeGoal;
+import com.patterns.dto.TrainingPlanCutDTO;
+import com.patterns.dto.TrainingPlanDTO;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
-import java.util.List;
-
-/*Паттерн Prototype
-* Паттерн SFM*/
+import java.util.*;
+import java.util.function.Function;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "training_plan")
+@AllArgsConstructor
+@NoArgsConstructor
 public class TrainingPlan {
     @Id
     @Setter(AccessLevel.NONE)
@@ -23,18 +24,28 @@ public class TrainingPlan {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "training_plan_id_seq")
     private Long id;
 
-    @OneToMany(mappedBy = "training_plan")
-    private List<Exercise> exerciseList;
+    @Column(unique = true, name = "title")
+    @NotBlank
+    private String title;
 
-    private Goal goal;
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "plan")
+    private Set<Exercise> exercises;
 
-    public TrainingPlan() {
+    @ManyToOne
+    @JoinColumn(name = "type_goal_id")
+    private TypeGoal goal;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        TrainingPlan that = (TrainingPlan) object;
+        return Objects.equals(id, that.id) && Objects.equals(title, that.title);
     }
 
-    private TrainingPlan(List<Exercise> exerciseList, Goal goal) {
-    }
-
-    public TrainingPlan replicate() {
-        return new TrainingPlan(this.exerciseList, this.goal);
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
     }
 }
