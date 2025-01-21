@@ -1,9 +1,10 @@
 package com.patterns.service.impl;
 
-import com.patterns.controller.error.NotFoundException;
-import com.patterns.database.model.type.TypeGoal;
 //import com.patterns.database.repository.type.GoalTypeRepository;
+import com.patterns.database.model.type.TypeGoal;
 import com.patterns.database.repository.type.GoalTypeRepository;
+import com.patterns.dto.mapper.type.TypeGoalMapper;
+import com.patterns.dto.type.TypeGoalDTO;
 import com.patterns.service.GoalTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoalTypeServiceImpl implements GoalTypeService {
     private final GoalTypeRepository repository;
+    private final TypeGoalMapper mapper;
 
     @Override
-    public List<TypeGoal> findAll() {
-        return repository.findAll();
+    public List<TypeGoalDTO> findAll() {
+        return repository.findAll().stream().map(mapper::convertToDTO).toList();
     }
 
     @Override
-    public TypeGoal findByName(String name) throws NotFoundException {
-        return repository.findByName(name).orElseThrow(NotFoundException::new);
+    public TypeGoalDTO findByNameDTO(String name){
+        return repository.findByName(name).map(mapper::convertToDTO).orElseThrow();
+    }
+
+    @Override
+    public TypeGoal findByName(String name){
+        return repository.findByName(name).orElse(null);
     }
 }

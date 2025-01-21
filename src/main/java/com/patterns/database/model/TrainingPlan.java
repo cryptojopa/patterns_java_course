@@ -2,11 +2,14 @@ package com.patterns.database.model;
 
 
 import com.patterns.database.model.type.TypeGoal;
+import com.patterns.dto.TrainingPlanCutDTO;
+import com.patterns.dto.TrainingPlanDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.*;
+import java.util.function.Function;
 
 @Entity
 @Getter

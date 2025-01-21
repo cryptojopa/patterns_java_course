@@ -1,14 +1,9 @@
 package com.patterns.controller;
 
-import com.patterns.controller.error.NotFoundException;
 import com.patterns.dto.ExerciseDTO;
-import com.patterns.dto.TrainingPlanDTO;
 import com.patterns.dto.TrainingSetDTO;
 import com.patterns.service.ExerciseService;
-import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.PathParam;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,21 +21,13 @@ public class ExerciseController {
 
     @GetMapping("/{id}")
     public ExerciseDTO findById(@PathVariable("id") Long id) {
-        try {
-            return service.findById(id);
-        } catch (NotFoundException e) {
-            throw new RuntimeException();
-        }
+        return service.findById(id);
     }
-    //принимать дтошку
+
     @PostMapping("/{exerciseId}/sets")
-    public void addSet(@PathVariable("exerciseId") Long id,
-                       @RequestBody TrainingSetDTO dto){
-        try {
-            service.addSet(id, weight, reps, intensity, commentary);
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public Long addSet(@PathVariable("exerciseId") Long id,
+                       @RequestBody TrainingSetDTO trainingSetDTO){
+        return service.addSet(id, trainingSetDTO);
     }
 
     @GetMapping("/{exerciseId}/sets")

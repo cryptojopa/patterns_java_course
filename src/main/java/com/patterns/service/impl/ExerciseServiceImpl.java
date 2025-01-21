@@ -1,6 +1,5 @@
 package com.patterns.service.impl;
 
-import com.patterns.controller.error.NotFoundException;
 import com.patterns.database.model.Exercise;
 import com.patterns.database.model.TrainingPlan;
 import com.patterns.database.model.type.TypeExercise;
@@ -8,6 +7,7 @@ import com.patterns.database.repository.ExerciseRepository;
 import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingSetDTO;
 import com.patterns.dto.mapper.ExerciseMapper;
+import com.patterns.dto.type.ExerciseCutDTO;
 import com.patterns.service.ExerciseService;
 import com.patterns.service.TrainingSetService;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +23,14 @@ public class ExerciseServiceImpl implements ExerciseService {
     private final ExerciseMapper mapper;
 
     @Override
-    public List<ExerciseDTO> findByTrainingPlanId(Long planId) {
-        return repository.findByTrainingPlanId(planId).stream().map(mapper::convertToDTO).toList();
+    public List<ExerciseCutDTO> findByTrainingPlanId(Long planId) {
+        return repository.findByTrainingPlanId(planId).stream().map(mapper::convertToCutDTO).toList();
     }
 
     @Override
-    public void create(TrainingPlan plan, TypeExercise typeExercise) {
-        Exercise exercise = new Exercise();
-        exercise.setExerciseType(typeExercise);
-        exercise.setPlan(plan);
-        repository.save(exercise);
+    public Long create(TrainingPlan plan, TypeExercise exerciseType) {
+        Exercise exercise = new Exercise(exerciseType, plan);
+        return repository.save(exercise).getId();
     }
 
     @Override
@@ -41,18 +39,16 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public ExerciseDTO findById(Long id) throws NotFoundException {
-        return repository.findById(id).map(mapper::convertToDTO).orElseThrow(NotFoundException::new);
+    public ExerciseDTO findById(Long id) {
+        return repository.findById(id).map(mapper::convertToDTO)
+                .orElseGet(() -> new Exercise().map(mapper::convertToDTO));
     }
 
+    //надо доделать штуку с возвратом дто сета
     @Override
-    public void addSet(Long id, double weight, int reps, String intensity, String commentary) throws NotFoundException {
-        Exercise exercise = repository.findById(id).orElseThrow(NotFoundException::new);
-        trainingSetService.add(exercise,
-                weight,
-                reps,
-                intensity,
-                commentary);
+    public Long addSet(Long exerciseId, TrainingSetDTO trainingSetDTO){
+        Exercise exercise = repository.findById(exerciseId).orElseThrow();
+        return trainingSetService.add(exercise, trainingSetDTO);
     }
 
     @Override

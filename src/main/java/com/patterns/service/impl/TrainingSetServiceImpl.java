@@ -1,9 +1,7 @@
 package com.patterns.service.impl;
 
-import com.patterns.controller.error.NotFoundException;
 import com.patterns.database.model.Exercise;
 import com.patterns.database.model.TrainingSet;
-import com.patterns.database.model.type.TypeIntensity;
 import com.patterns.database.repository.TrainingSetRepository;
 import com.patterns.dto.TrainingSetDTO;
 import com.patterns.dto.mapper.TrainingSetMapper;
@@ -27,23 +25,17 @@ public class TrainingSetServiceImpl implements TrainingSetService {
     }
 
     @Override
-    public void add(Exercise exercise, Double weight, Integer reps, String intensity, String commentary) {
-            TypeIntensity typeIntensity = intensityTypeService.findByName(intensity);
-            TrainingSet set = new TrainingSet()
-            set.setExercise(exercise);
-            set.setWeight(weight);
-            set.setReps(reps);
-            set.setIntensity()
-            set.setCommentary(commentary);
-            repository.save(set);
+    public Long add(Exercise exercise, TrainingSetDTO trainingSetDTO) {
+        TrainingSet set = mapper.convertToEntity(trainingSetDTO, exercise);
+        return repository.save(set).getId();
     }
 
     @Override
     public void update(Long id, Double weight, Integer reps, String intensity, String commentary) {
-            TrainingSet set = repository.findById(id).;
-            repository.update(id, weight, reps, commentary);
-        } catch (NotFoundException e) {
-            throw new RuntimeException("TrainingSet not found", e);
-        }
+            repository.update(id,
+                    weight,
+                    reps,
+                    intensityTypeService.findByName(intensity),
+                    commentary);
     }
 }

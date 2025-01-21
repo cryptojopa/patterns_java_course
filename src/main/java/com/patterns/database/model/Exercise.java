@@ -2,12 +2,15 @@ package com.patterns.database.model;
 
 
 import com.patterns.database.model.type.TypeExercise;
+import com.patterns.dto.ExerciseDTO;
+import com.patterns.dto.mapper.ExerciseMapper;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 @Entity
 @Getter
@@ -24,6 +27,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "training_plan_id", nullable = false)
+    @Setter(AccessLevel.NONE)
     private TrainingPlan plan;
 
     @OneToMany(mappedBy = "exercise")
@@ -31,6 +35,7 @@ public class Exercise {
 
     @ManyToOne
     @JoinColumn(name = "type_exercise_id", nullable = false)
+    @Setter(AccessLevel.NONE)
     private TypeExercise exerciseType;
 
     public void addSet(TrainingSet trainingSet) {
@@ -39,6 +44,15 @@ public class Exercise {
 
     public void removeSet(TrainingSet trainingSet) {
         trainingSets.remove(trainingSet);
+    }
+
+    public Exercise(TypeExercise exerciseType, TrainingPlan plan) {
+        this.exerciseType = exerciseType;
+        this.plan = plan;
+    }
+
+    public ExerciseDTO map(Function<Exercise,ExerciseDTO> mapper) {
+        return mapper.apply(this);
     }
 
     @Override

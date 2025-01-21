@@ -3,10 +3,10 @@ package com.patterns.service.impl;
 import com.patterns.database.model.TrainingPlan;
 import com.patterns.database.model.type.TypeExercise;
 import com.patterns.database.repository.TrainingPlanRepository;
-import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingPlanCutDTO;
 import com.patterns.dto.TrainingPlanDTO;
 import com.patterns.dto.mapper.TrainingPlanMapper;
+import com.patterns.dto.type.ExerciseCutDTO;
 import com.patterns.service.ExerciseService;
 import com.patterns.service.ExerciseTypeService;
 import com.patterns.service.GoalTypeService;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +26,11 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
     private final ExerciseTypeService exerciseTypeService;
 
     @Override
-    public void create(String title, String goalType) {
+    public Long create(String title, String goalType) {
         TrainingPlan plan = new TrainingPlan();
         plan.setTitle(title);
         plan.setGoal(goalTypeService.findByName(goalType));
-        repository.save(plan);
+        return repository.save(plan).getId();
     }
 
     @Override
@@ -46,25 +45,24 @@ public class TrainingPlanServiceImpl implements TrainingPlanService {
 
     @Override
     public TrainingPlanDTO findById(Long id)   {
-        return repository.findById(id).map(mapper::convertToDTO).orElse(  );
+        return repository.findById(id).map(mapper::convertToDTO)
+                .orElseGet(() -> mapper.convertToDTO(new TrainingPlan()));
     }
 
     @Override
-    public List<ExerciseDTO> findExercisesByPlanId(Long id){
+    public List<ExerciseCutDTO> findExercisesByPlanId(Long id){
         return exerciseService.findByTrainingPlanId(id);
     }
 
     @Override
-    public void addExercise(Long planId, String exerciseType)   {
-        Optional<TrainingPlan> plan = repository.findById(planId);
-        if (plan.isPresent()) {
-            TypeExercise typeExercise1 = exerciseTypeService.findByName(exerciseType);
-            exerciseService.create(plan.get(), typeExercise1);
-        }
+    public Long addExercise(Long planId, String exerciseType)   {
+        TrainingPlan plan = repository.findById(planId).get();
+        TypeExercise typeExercise = exerciseTypeService.findByName(exerciseType);
+        return exerciseService.create(plan, typeExercise);
     }
 
     @Override
-    public void update(Long id, TrainingPlanDTO planDTO) {
-        repository.findById(id)
+    public TrainingPlanCutDTO update(Long id, String title, String goal) {
+        return mapper.convertToCutDTO(repository.update(id, title, goalTypeService.findByName(goal)));
     }
 }

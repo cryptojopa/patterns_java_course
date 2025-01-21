@@ -1,12 +1,12 @@
 package com.patterns.controller;
 
-import com.patterns.controller.error.NotFoundException;
 import com.patterns.dto.ExerciseDTO;
 import com.patterns.dto.TrainingPlanCutDTO;
-import com.patterns.dto.TrainingPlanDTO;
+import com.patterns.dto.type.ExerciseCutDTO;
 import com.patterns.service.TrainingPlanService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.ws.rs.QueryParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,23 +21,14 @@ public class TrainingPlanController {
     private final TrainingPlanService service;
 
     @PostMapping()
-    public ResponseEntity<String> add(@RequestParam("title") @NotBlank String title,
-                                      @RequestParam("goal") @NotBlank String goalType) {
-        try {
-            service.create(title, goalType);
-            return new ResponseEntity<>(HttpStatus.CREATED.getReasonPhrase(), HttpStatus.CREATED);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>("Invalid goal type", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<Long> add(@RequestParam("title") @NotBlank String title,
+                                      @RequestParam("goal") @NotBlank String goal) {
+        return new ResponseEntity<>(service.create(title, goal), HttpStatus.CREATED);
     }
 
     @GetMapping("/{planId}")
     public ResponseEntity<?> findById(@PathVariable("planId") Long id) {
-        try {
-            return ResponseEntity.ok(service.findById(id)) ;
-        } catch (NotFoundException e) {
-            return ResponseEntity.badRequest().body("Invalid id");
-        }
+        return ResponseEntity.ok(service.findById(id)) ;
     }
 
     @GetMapping()
@@ -51,46 +42,22 @@ public class TrainingPlanController {
         return ResponseEntity.status(HttpStatus.OK).body(HttpStatus.OK.getReasonPhrase());
     }
 
-    @PatchMapping("/{planId}/title")
-    public ResponseEntity<String> updateTitle(@PathVariable("planId")  Long id,
-                                              @RequestParam("title") @NotBlank String title) {
-        try {
-            service.updateTitle(id, title);
-            return new ResponseEntity<>(HttpStatus.OK.getReasonPhrase(), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid id: " + id);
-        }
-    }
-
-    @PatchMapping("/{planId}/goal")
-    public ResponseEntity<?> updateGoalType(@PathVariable("planId") @NotNull Long id,
-                                              @RequestParam("goal") String goalType) {
-        try {
-            service.updateGoalType(id, goalType);
-            return new ResponseEntity<>(HttpStatus.OK.getReasonPhrase(), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid plan id: " + id);
-        }
+    @PatchMapping("/{planId}")
+    public ResponseEntity<TrainingPlanCutDTO> update(@PathVariable("planId")  Long id,
+                                              @QueryParam("title") String title,
+                                              @QueryParam("goal") String goal) {
+            return new ResponseEntity<>(service.update(id, title, goal), HttpStatus.OK);
     }
 
     @PostMapping("/{planId}/exercises")
-    public void addExercise(@PathVariable("planId") @NotNull Long id,
+    public Long addExercise(@PathVariable("planId") @NotNull Long id,
                             @RequestParam("exerciseType") String exerciseType) {
-        try {
-            service.addExercise(id, exerciseType);
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
+            return service.addExercise(id, exerciseType);
     }
 
 
     @GetMapping("/{planId}/exercises")
-    public List<ExerciseDTO> findExercisesByPlanId(@PathVariable("planId") @NotNull Long id) {
-        try {
-            return service.findExercisesByPlanId(id);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+    public List<ExerciseCutDTO> findExercisesByPlanId(@PathVariable("planId") Long id) {
+        return service.findExercisesByPlanId(id);
     }
-
 }

@@ -7,5 +7,4 @@ public record TrainingSetDTO(
         Integer reps,
         String intensity,
         String commentary) {
-
 }
